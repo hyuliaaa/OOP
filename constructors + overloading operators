@@ -1,0 +1,149 @@
+#include <cstring>
+#include <iostream>
+
+class Mystring{
+private:
+    char *str;
+public:
+// No-args constructor
+Mystring()
+    : str{nullptr} {
+    str = new char[1];
+    *str = '\0';
+}
+
+// Overloaded constructor-
+Mystring(const char *s)
+    : str {nullptr} {
+        if (s==nullptr) {
+            str = new char[1];
+            *str = '\0';
+        } else {
+            str = new char[std::strlen(s)+1];
+            std::strcpy(str, s);
+        }
+}
+
+// Copy constructor
+Mystring(const Mystring &source)
+     : str{nullptr} {
+        str = new char[std::strlen(source.str )+ 1];
+        std::strcpy(str, source.str);
+}
+
+//Copy Assignment operator
+Mystring& operator=(const Mystring &rhs)
+{
+  std::cout<<"Operator="<<std::endl;
+    if(this==&rhs)
+        return *this;
+    delete []str;
+    str=new char [std::strlen(rhs.str)+1];
+    std::strcpy(str,rhs.str);
+    return *this;
+}
+//move assignment operator
+Mystring& operator=(Mystring &&rhs)
+{
+    std::cout<<"move assignment operator"<<std::endl;
+    if (this==&rhs)
+        return *this;
+    delete [] str;
+    str=rhs.str;
+    rhs.str=nullptr;
+    return *this;
+
+}
+///overloading operators
+
+//Equality
+bool  operator==(const Mystring&rhs)const
+{
+    if (std::strcmp(str,rhs.str)==0)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+
+}
+//to lower
+Mystring operator-()const
+{
+    char *buff=new char [std::strlen(str)+1];
+    std::strcpy(buff,str);
+    for (int i=0; i<strlen(buff); i++)
+    {
+        buff[i]=std::tolower(buff[i]);
+    }
+    Mystring temp{buff};
+    delete []buff;
+    return temp;
+}
+
+//operator + in terms of concatenating c-style strings;
+Mystring operator+(const Mystring &rhs)
+{
+    char *buff=new char[std::strlen(str)+std::strlen(rhs.str)+1];
+    std::strcpy(buff,str);
+    std::strcat(buff,rhs.str);
+    Mystring temp{buff};
+    delete [] buff;
+    return temp;
+
+}
+
+
+// Destructor
+~Mystring() {
+    delete [] str;
+}
+
+// Display method
+void display() const {
+    std::cout << str << " : " << get_length() << std::endl;
+}
+
+// length getter
+ int get_length() const { return std::strlen(str); }
+
+  // string getter
+ const char *get_str() const { return str; }
+
+
+
+};
+
+int main() {
+    Mystring empty;                      // no-args constructor
+    Mystring larry("Larry");             // overloaded constructor
+    empty=larry;                         // copy constructor
+    empty="hellloo";
+
+    ///using overloaded operator==
+    Mystring moe {"Moe"};
+    std::cout<<(larry==moe)<<std::endl;
+
+    Mystring joe{larry};
+    std::cout<<(larry==joe)<<std::endl;
+
+    ///using operator- to lower a string
+    larry.display();
+    Mystring larr=-larry;
+    larr.display();
+    ///using operator + to concatenate two strings
+    Mystring stooges=larry +" Moe";
+    stooges.display();
+
+    Mystring twoStooges= larry +" "+ moe+ " Curly "+joe;
+    twoStooges.display();
+
+    std::cout<<larry<<std::endl;
+
+
+
+    return 0;
+}
+
