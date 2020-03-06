@@ -1,0 +1,36 @@
+#include <iostream> 
+#include <cstring> 
+using namespace std; 
+
+class Document { 
+    char ID[11]; 
+    char name[100]; 
+
+public: 
+    Document() 
+    { 
+        strcpy(ID,"0000000000"); 
+        strcpy(name,"None"); 
+    } 
+
+    Document(const char _ID[],const char _name[]) 
+    { 
+        strcpy(ID,_ID); 
+        strcpy(name,_name); 
+    } 
+
+    void print() 
+    { 
+        cout<<name<<endl; 
+        cout<<ID<<endl; 
+    } 
+}; 
+int main() 
+{ 
+
+ Document one; 
+ one.print(); 
+ Document two("1234567892","Elena"); 
+ two.print(); 
+
+} 
