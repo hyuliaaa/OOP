@@ -1,0 +1,80 @@
+#include <iostream>
+using namespace std;
+
+class Rectangle
+{
+private:
+    int length;
+    int width;
+public:
+    Rectangle()
+    {
+        length=0;
+        width=0;
+    }
+    Rectangle(int length, int width)
+    {
+        this->length=length;
+        this->width=width;
+    }
+    ///copy constructor
+    Rectangle(Rectangle &rect)
+    {
+        this->length=rect.length;
+        this->width=rect.width;
+    }
+    void setLenght(int lenght)
+    {
+        this->length=lenght;
+    }
+    int getLenght()
+    {
+        return length;
+    }
+    void setWidth(int width)
+    {
+        this->width=width;
+    }
+    int getWidth()
+    {
+        return width;
+    }
+
+    int area();
+    int perimeter();
+    bool isSquare();
+    ~Rectangle();
+
+};
+
+int Rectangle::perimeter()
+{
+    return 2*(length+width);
+}
+int Rectangle::area()
+{
+    return length*width;
+}
+bool Rectangle::isSquare()
+{
+    return length==width;
+}
+Rectangle::~Rectangle()
+{
+    cout<<"Rectangle destroyed!"<<endl;
+}
+
+
+int main()
+{
+
+    Rectangle r(10,10);
+    cout<<"Area: "<<r.area()<<endl;
+    if(r.isSquare())
+    {
+        cout<<"Yes, it is a square"<<endl;
+    }
+
+
+    return 0;
+}
