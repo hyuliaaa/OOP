@@ -1,0 +1,97 @@
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+class Person
+{
+private:
+    char *name;
+    int age;
+
+public:
+    Person();
+    Person(const char *name, int age);
+    ~Person();
+    int getAge();
+    void setAge(int age);
+    char *getName();
+    void setName(char *name);
+
+
+};
+
+Person::Person()
+{
+    name=nullptr;
+    age=0;
+}
+
+Person::Person(const char *name, int age)
+{
+    if(name!=nullptr) ///n!=nullptr
+    {
+        this->name=new char [strlen(name)+1]; ///name= new char [strlen(n)+1];
+        strcpy(this->name,name);
+    }
+    else
+    {
+        name=nullptr;
+    }
+    this->age=age;
+}
+
+void Person::setAge(int age)
+{
+    this->age=age;
+
+}
+
+int Person::getAge()
+{
+    return age;
+}
+
+char *Person::getName()
+{
+    return name;
+}
+
+
+void Person::setName(char *name)
+{
+    if(name!=nullptr)
+    {
+        delete []this->name; /// we are deleting previous information
+        this->name= new char [strlen(name)+1];
+        strcpy(this->name,name);
+    }
+}
+
+Person::~Person()
+{
+    delete []name;
+}
+
+
+
+int main()
+{
+
+    int n;
+    cin >> n;
+
+    Person * p = new Person[n];
+
+    for(int i=0;i<n;i++){
+        int age;
+        char name[30];
+        cin >> name >> age;
+        p[i].setName(name);
+        p[i].setAge(age);
+    }
+    
+    delete []p;
+
+
+    return 0;
+}
