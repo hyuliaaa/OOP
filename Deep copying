@@ -1,0 +1,53 @@
+#include <iostream>
+using namespace std;
+
+class DeepCopying{
+private:
+    int *data;
+public:
+    void setData(int d){*data=d;}
+    int getData(){return *data;}
+    DeepCopying(int d);
+    DeepCopying(const DeepCopying &source);
+    ~DeepCopying();
+};
+
+DeepCopying::DeepCopying(int d)
+{
+    data=new int;
+    *data=d;
+    cout<<"Creating object!"<<endl;
+}
+
+DeepCopying::DeepCopying(const DeepCopying &source)
+{
+    data=new int;
+    *data=*source.data;
+    cout<<"Copy constructor being called-deep copy"<<endl;
+}
+
+DeepCopying::~DeepCopying()
+{
+    delete data;
+    cout<<"Destructor freeing data!"<<endl;
+}
+
+void display(DeepCopying p)
+{
+    cout<<p.getData()<<endl;
+
+}
+
+int main()
+{
+
+    DeepCopying obj1(100);
+    display(obj1);
+
+    DeepCopying obj2(obj1);
+    obj2.setData(1000);
+    display(obj2);
+
+
+    return 0;
+}
