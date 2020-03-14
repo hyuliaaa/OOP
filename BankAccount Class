@@ -1,0 +1,66 @@
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+class BankAccout
+{
+private:
+    char name[23];
+    char BankAccNum[15];
+    double money;
+public:
+    BankAccout(const char *name,const  char *BankAccNum, double money);
+    void deposit(double amount);
+    void withdraw(double amount);
+    void print();
+    ~BankAccout(){}
+
+
+};
+
+BankAccout::BankAccout(const char *name,const  char *BankAccNum, double money)
+{
+    strcpy(this->name,name);
+    strcpy(this->BankAccNum,BankAccNum);
+    this->money=money;
+}
+
+void BankAccout::deposit(double amount)
+{
+     money+=amount;
+}
+
+void BankAccout::withdraw(double amount)
+{
+    if(money-amount<0)
+    {
+        cout<<"Sorry, you cannot withdraw money!"<<endl;
+
+    } else{
+     money-=amount;
+    }
+}
+
+void BankAccout::print()
+{
+    cout<<"Name:" <<name<<endl;
+    cout<<"BankAccNum: "<<BankAccNum<<endl;
+    cout<<"Money: "<<money<<endl;
+}
+
+
+
+
+
+int main()
+{
+    BankAccout b("Elena", "12", 1234);
+    b.deposit(6);
+    b.print();
+
+    BankAccout a("Lina", "11", 120);
+    a.withdraw(150);
+    a.print();
+
+    return 0;
+}
