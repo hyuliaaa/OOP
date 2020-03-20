@@ -1,0 +1,239 @@
+
+
+#include <cstring>
+#include <iostream>
+using namespace std;
+
+class Student
+{
+	char name[30];
+	int year;
+	int fn;
+	int marks[5];
+
+public:
+	Student()
+	{
+		strcpy(name, "");
+		year = 1;
+		fn = 70000;
+		for (int i = 0; i < 5; i++)
+		{
+			marks[i] = 0;
+		}
+	}
+	Student(const char name[], int year, int fn, int marks[])
+	{
+		strcpy(this->name, name);
+		this->year = year;
+		this->fn = fn;
+		for (int i = 0; i < 5; i++)
+		{
+			this->marks[i] = marks[i];
+		}
+
+	}
+
+	 char *getName()
+	{
+		return name;
+	}
+
+	void setName(char *name)
+	{
+		strcpy(this->name, name);
+	}
+
+	int getYear()
+	{
+		return year;
+	}
+
+	void setYear(int year)
+	{
+		this->year = year;
+	}
+	int getFN()
+	{
+		return fn;
+	}
+
+	void setFN(int fn)
+	{
+		this->fn = fn;
+	}
+	const int *getMarks()
+	{
+		return marks;
+
+	}
+
+	void setMarks(const int *marks)
+	{
+		for (int i = 0; i < 5; i++)
+		{
+			this->marks[i] = marks[i];
+		}
+	}
+
+
+	double getPDA()
+	{
+	    double average=0;
+	    for(int i=0; i<5; i++)
+        {
+            average+=marks[i];
+        }
+		return average/5;
+	}
+
+	void print()
+	{
+		cout << "Name:" << name << endl;
+		cout << "Year:" << year << endl;
+		cout << "FN:" << fn << endl;
+		cout << "GPA:" << getPDA() << endl;
+
+	}
+};
+
+class Group{
+    int numberOfStudents;
+    Student students[30];
+public:
+    Group()
+    {
+        numberOfStudents=0;
+    }
+
+    Group(int numberOfStudents, Student *newStudents)
+    {
+        this->numberOfStudents=numberOfStudents;
+        for(int i=0; i<numberOfStudents; i++)
+        {
+            students[i]=newStudents[i];
+        }
+    }
+
+    int getNumberOfStudents()
+    {
+        return numberOfStudents;
+    }
+    void setNumberOfStudents(int numOfStud)
+    {
+        numberOfStudents=numOfStud;
+    }
+
+    Student *getStudents()
+    {
+        return students;
+    }
+    void setStudents(Student *newStud, int numOfStud)
+    {
+        numberOfStudents=numOfStud;
+        for(int i=0; i<numberOfStudents;i++)
+        {
+            students[i].setName(newStud[i].getName());
+            students[i].setYear(newStud[i].getYear());
+            students[i].setFN(newStud[i].getFN());
+            students[i].setMarks(newStud[i].getMarks());
+        }
+    }
+
+    int getScholarshipCount()
+    {
+        int cnt=0;
+        for(int i=0; i<numberOfStudents;i++)
+        {
+            if(students[i].getPDA()>=4.50)
+            {
+                cnt++;
+            }
+        }
+        return cnt;
+    }
+
+    double getPDAGroup()
+    {
+        double average=0;
+        for(int i=0; i<numberOfStudents;i++)
+        {
+            average+=students[i].getPDA();
+        }
+        return average/numberOfStudents;
+
+    }
+
+    int findStudent(const char *sName)
+    {
+        for(int i=0; i<numberOfStudents;i++)
+        {
+            if(strcmp(students[i].getName(),sName)==0)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    int findStudent(int facNum)
+    {
+        for(int i=0; i<numberOfStudents;i++)
+        {
+            if(students[i].getFN()==facNum)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    bool changeFN(const char *sName, int newFN)
+    {
+        for(int i=0; i<numberOfStudents;i++)
+        {
+            if(strcmp(students[i].getName(),sName)==0)
+            {
+                students[i].setFN(newFN);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    void print()
+    {
+        cout<<"--------Group--------"<<endl;
+        for(int i=0; i<numberOfStudents;i++)
+        {
+            students[i].print();
+        }
+        cout<<"---------------------"<<endl;
+        cout<<"GPA"<<getPDAGroup()<<endl;
+        cout<<"Shcolarship Students count"<<getScholarshipCount()<<endl;
+    }
+
+};
+int main()
+{
+    int marks[5]={5,5,6,6,6};
+    Student a("Gosho",2,78647,marks);
+
+    int gradesPesho[5] = {6, 6, 4, 6, 6};
+    Student pesho("Pesho", 1, 74231, gradesPesho);
+
+    int gradesVlado[5] = {6, 5, 5, 6, 2};
+    Student vlado("Vlado", 1, 71211, gradesVlado);
+
+    int gradesGinka[5] = {3, 5, 4, 3, 2};
+    Student ginka("Ginka", 1, 75256, gradesGinka);
+
+    int gradesMariq[5] = {6, 6, 3, 4, 5};
+    Student mariq("Mariq", 1, 75252, gradesMariq);
+
+    Student stud[4]={pesho,vlado,ginka,mariq};
+
+    Group g(4,stud);
+    g.print();
+}
+
