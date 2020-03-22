@@ -1,0 +1,226 @@
+#include <iostream>
+
+using namespace std;
+
+class DynamicArray
+{
+private:
+    int *arr;
+    int sz;
+public:
+    DynamicArray();
+    DynamicArray(int sz);
+    DynamicArray(const DynamicArray& other);
+    ~DynamicArray();
+    DynamicArray& operator=(const DynamicArray& other);
+    void print();
+    void input();
+    void setNewValue(int index, int value);
+    void append(int element);
+    void toFront(int element);
+    void removeElement(int element);
+    bool operator==(const DynamicArray& other);
+    DynamicArray operator+(const DynamicArray& other);
+    int getSize();
+    friend ostream& operator<<(ostream& out, const DynamicArray& other);
+
+};
+
+DynamicArray::DynamicArray()
+{
+    arr=nullptr;
+    sz=0;
+}
+
+DynamicArray::DynamicArray(int sz)
+{
+    this->sz=sz;
+    arr=new int[this->sz];
+}
+DynamicArray::DynamicArray(const DynamicArray& other)
+{
+    this->sz=other.sz;
+    this->arr=new int [this->sz];
+    for(int i=0; i<this->sz;i++)
+    {
+        this->arr[i]=other.arr[i];
+    }
+}
+
+DynamicArray& DynamicArray::operator=(const DynamicArray &other)
+{
+    if(this!=&other)
+    {
+        delete[]arr;
+        this->sz=other.sz;
+        this->arr=new int[this->sz];
+        for(int i=0; i<this->sz;i++)
+        {
+            this->arr[i]=other.arr[i];
+        }
+
+    }
+    return *this;
+}
+
+DynamicArray::~DynamicArray()
+{
+    delete []arr;
+}
+
+void DynamicArray::print()
+{
+    for(int i=0; i<this->sz;i++)
+    {
+        cout<<arr[i]<<" ";
+    }
+}
+void DynamicArray::input()
+{
+    for(int i=0; i<sz; i++)
+    {
+        cin>>arr[i];
+    }
+}
+
+void DynamicArray::setNewValue(int index,int value)
+{
+    arr[index]=value;
+}
+
+void DynamicArray::append(int element)
+{
+
+    int *newBuffer=new int [sz+1];
+    for(int i=0; i<sz;i++)
+    {
+        newBuffer[i]=arr[i];
+    }
+    newBuffer[sz]=element;
+    sz++;
+
+    delete []arr;
+    arr=newBuffer;
+}
+void DynamicArray::toFront(int element)
+{
+    int *newBuffer=new int [sz+1];
+    for(int i=0; i<sz;i++)
+    {
+        newBuffer[i+1]=arr[i];
+    }
+    newBuffer[0]=element;
+    sz++;
+
+    delete []arr;
+    arr=newBuffer;
+}
+
+void DynamicArray::removeElement(int element)
+{
+    int *newBuffer=new int [sz-1];
+    int h=0;
+    for(int i=0; i<sz;i++)
+    {
+        if(arr[i]!=element)
+        {
+            newBuffer[h]=arr[i];
+            h++;
+        }
+    }
+    sz--;
+    delete []arr;
+    arr=newBuffer;
+}
+
+bool DynamicArray::operator==(const DynamicArray& other)
+{
+    if(sz!=other.sz)
+    {
+        return false;
+    }
+    for(int i=0; i<sz;i++)
+    {
+        if(arr[i]!=other.arr[i])
+        {
+            return false;
+        }
+    }
+    return true;
+
+}
+DynamicArray DynamicArray::operator+(const DynamicArray &other)
+{
+    DynamicArray temp(sz);
+
+    ///if we accept that the two vectors have equal length
+
+        for(int i=0;i<sz;i++)
+        {
+            temp.arr[i]=arr[i]+other.arr[i];
+        }
+
+    return temp;
+}
+int DynamicArray::getSize()
+{
+    return sz;
+}
+
+ostream& operator<<(ostream& out, const DynamicArray& obj)
+{
+    for(int i=0; i<obj.sz;i++)
+    {
+        out<<obj.arr[i]<<" ";
+    }
+    return out;
+}
+
+
+int main()
+{
+    DynamicArray a1(3);
+    a1.input();
+    a1.print();
+    cout<<endl;
+
+    DynamicArray a2(a1);
+    cout<<"a2 print:";
+    a2.print();
+    cout<<endl;
+
+    DynamicArray a3;
+
+    a3=a1;
+    cout<<"a3 print:";
+    a3.print();
+    cout<<endl;
+    a3.setNewValue(1,5);
+    cout<<"New print with different value:"<<endl;
+    a3.print();
+    a3.append(5);
+    cout<<endl;
+    a3.print();
+    cout<<"After removing 3: "<<endl;
+    a3.removeElement(3);
+    a3.print();
+
+    cout<<endl;
+    a3.toFront(7);
+    cout<<"After adding 7 to the front: "<<endl;
+    a3.print();
+
+
+    cout<<"Checking whether the two dynamic arrays are equal"<<endl;
+    cout<<(a3==a1)<<endl;
+    cout<<(a1==a2)<<endl;
+
+    cout<<(a1+a2);
+    cout<<endl;
+    cout<<a1<<endl;
+
+
+
+
+    return 0;
+}
