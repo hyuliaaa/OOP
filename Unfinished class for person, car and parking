@@ -1,0 +1,328 @@
+#include <iostream>
+#include <cstring>
+using namespace std;
+class Person
+{
+private:
+    char *name;
+    int age;
+    bool hasLicence;
+public:
+    Person();
+    Person(const char *n, int a,bool hasLicence);
+    Person(const Person& other);
+    Person& operator=(const Person& other);
+    bool operator==(const Person& other);
+    ~Person();
+    const char *getName();
+    void setName(const char *n);
+    int getAge();
+    void setAge(int a);
+    void setLicence(bool Licence);
+    void print()const;
+    bool getLicence();
+
+
+};
+
+Person::Person():name(nullptr),age(),hasLicence(false)
+{
+
+}
+Person::Person(const char *n, int a, bool licence)
+{
+    name=new char[strlen(n)+1];
+    strcpy(name,n);
+    age=a;
+    hasLicence=licence;
+}
+Person::Person(const Person& other)
+{
+    name=new char [strlen(other.name)+1];
+    strcpy(name,other.name);
+    age=other.age;
+    hasLicence=other.hasLicence;
+}
+Person& Person::operator=(const Person& other)
+{
+    if(this!=&other)
+    {
+        delete[]name;
+        name=new char [strlen(other.name)+1];
+        strcpy(name,other.name);
+        age=other.age;
+        hasLicence=other.hasLicence;
+    }
+    return *this;
+}
+bool Person::operator==(const Person& other)
+{
+    return strcmp(name,other.name)==0 && age==other.age && hasLicence==other.hasLicence;
+}
+Person::~Person()
+{
+    delete []name;
+}
+
+const char* Person::getName()
+{
+    return name;
+}
+void Person::setName(const char *n)
+{
+    name=new char [strlen(n)+1];
+    strcpy(name,n);
+}
+int Person::getAge()
+{
+    return age;
+}
+void Person::setAge(int a)
+{
+    age=a;
+}
+bool Person::getLicence()
+{
+    return hasLicence;
+}
+
+void Person::setLicence(bool _hasLicence){
+    this->hasLicence = _hasLicence;
+}
+
+void Person::print() const{
+    std::cout << "\n--------------Person--------------\n"
+              << "Name: "
+              << this->name
+              << std::endl
+              << "Age: "
+              << this->age
+              << std::endl
+              << "has licence: "
+              << std::boolalpha
+              << this->hasLicence
+              << std::endl;
+}
+
+class Car
+{
+private:
+    char *brand;
+    char *licencePlate;
+    char *color;
+    Person owner;
+public:
+    Car();
+    Car(const char *b,const char *lp, const char *c,const Person& other);
+    Car(const Car& other);
+    Car& operator=(const Car& other);
+    ~Car();
+    const char *getBrand();
+    const char* getLicencePlate();
+    const char *getColor();
+    Person getOwner();
+    void setBrand(const char *b);
+    void setLicencePlate(const char *lp);
+    void setColor(const char *c);
+    void printInfoForCar();
+    void setOwner(const Person& other);
+    bool checkOwnerLicence();
+
+};
+
+Car::Car():brand(nullptr),licencePlate(nullptr),color(nullptr),owner(Person())
+{
+
+}
+Car::Car(const char *b, const char *lp, const char*c, const Person& other)
+{
+    brand=new char(strlen(b)+1);
+    strcpy(brand,b);
+    licencePlate=new char [strlen(lp)+1];
+    strcpy(licencePlate,lp);
+    color=new char[strlen(c)+1];
+    strcpy(color,c);
+    owner=other;
+}
+Car::Car(const Car& other)
+{
+    brand=new char[strlen(other.brand)+1];
+    strcpy(brand,other.brand);
+    licencePlate=new char[strlen(other.licencePlate)+1];
+    strcpy(licencePlate,other.licencePlate);
+    color=new char[strlen(other.color)+1];
+    strcpy(color,other.color);
+    owner=other.owner;
+}
+Car& Car::operator=(const Car& other)
+{
+    if(this!=&other)
+    {
+        delete [] brand;
+        delete[] licencePlate;
+        delete []color;
+        brand=new char[strlen(other.brand)+1];
+    strcpy(brand,other.brand);
+    licencePlate=new char[strlen(other.licencePlate)+1];
+    strcpy(licencePlate,other.licencePlate);
+    color=new char[strlen(other.color)+1];
+    strcpy(color,other.color);
+    owner=other.owner;
+    }
+    return *this;
+}
+Car::~Car()
+{
+    delete []brand;
+    delete []licencePlate;
+    delete []color;
+}
+
+Person Car::getOwner()
+{
+    return owner;
+}
+
+const char* Car::getLicencePlate()
+{
+    return licencePlate;
+}
+
+
+void Car::printInfoForCar() {
+    std::cout << "\n-----------Car-----------\n"
+              << "Brand: "
+              << this->brand
+              << std::endl
+              << "Licence plate: "
+              << this->licencePlate
+              << std::endl
+              << "Color: "
+              << this->color
+              << std::endl
+              << "Owner:";
+    this->owner.print();
+}
+
+bool Car::checkOwnerLicence()
+{
+    return owner.getLicence()==true;
+}
+
+class Parking
+{
+private:
+    char *fname;
+    Person owner;
+    Car *cars;
+    size_t carNumber;
+public:
+    Parking();
+    Parking(const char*, const Person& other, const Car *c, size_t n);
+    Parking(const Parking& other);
+    Parking& operator=(const Parking& other);
+    ~Parking();
+
+    char* getFirmName() const;
+    Person getOwner() const;
+    Car* getCars() const;
+    size_t getCarNumber() const;
+    size_t getCapacity() const;
+
+    void setFirmName(char*);
+    void setOwner(const Person&);
+    void setCars(const Car*, size_t);
+
+    void addCar(const Car& other);
+    void printCars();
+    Person findOwner(const char *);
+    bool removeCar(size_t);
+    void findCar(const Person& p);
+};
+Parking::Parking():fname(nullptr),owner(Person()),cars(nullptr),carNumber(0)
+{
+
+}
+Parking::Parking(const char*fnm, const Person& other, const Car *c, size_t n)
+{
+    fname=new char[strlen(fnm)+1];
+    strcpy(fname,fnm);
+    owner=other;
+    cars=new Car[n];
+    for(int i=0; i<n;i++)
+    {
+        this->cars[i]=c[i];
+    }
+    carNumber=n;
+}
+Parking::Parking(const Parking& other)
+{
+    fname=new char[strlen(other.fname)+1];
+    strcpy(fname,other.fname);
+    owner=other.owner;
+    carNumber=other.carNumber;
+    cars=new Car[carNumber];
+    for(int i=0; i<carNumber;i++)
+    {
+        cars[i]=other.cars[i];
+    }
+}
+
+Parking& Parking::operator=(const Parking& other)
+{
+    if(this!=&other)
+    {
+        delete []fname;
+         fname=new char[strlen(other.fname)+1];
+    strcpy(fname,other.fname);
+    owner=other.owner;
+    carNumber=other.carNumber;
+    cars=new Car[carNumber];
+    for(int i=0; i<carNumber;i++)
+    {
+        cars[i]=other.cars[i];
+    }
+    }
+    return *this;
+}
+Parking::~Parking()
+{
+    delete []fname;
+}
+Person Parking::findOwner(const char *rn)
+{
+    for(int i=0; i<carNumber;i++)
+    {
+        if(strcmp(cars[i].getLicencePlate(),rn)==0)
+        {
+            return cars[i].getOwner();
+        }
+    }
+
+}
+
+void Parking::findCar(const Person& owner)
+{
+    for(int i=0; i<carNumber;i++)
+    {
+        if(cars[i].getOwner()==owner)
+        {
+            cars[i].printInfoForCar();
+        }
+    }
+}
+
+
+int main()
+{
+    Person andrey("Andy",25,1);
+
+    Car c("BMW X5","1666","black",andrey);
+    Car b("BMW", "1565","Red",andrey);
+
+    Car cars[2]={c,b};
+    Parking p("park ood",andrey,cars,sizeof(cars) / sizeof(Car));
+    p.findCar(andrey);
+
+    return 0;
+}
